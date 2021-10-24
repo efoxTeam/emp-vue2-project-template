@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@efox/emp-cli": "^1.4.0",
+    "@efox/emp-cli": "^1.9.6",
+    "@efox/emp-remote-md5": "^1.1.4",
     "@efox/emp-vue2": "^1.0.0",
     "@efox/eslint-config-react-prittier-ts": "^1.2.5"
   },

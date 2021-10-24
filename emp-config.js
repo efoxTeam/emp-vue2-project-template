@@ -1,40 +1,35 @@
-const withVue2 = require('@efox/emp-vue2')
-module.exports = withVue2(({config}) => {
-  const projectName = 'vue2Project'
-  const port = 8008
-  config.output.publicPath(`http://localhost:${port}/`)
-  config.devServer.port(port)
-  config.plugin('mf').tap(args => {
-    args[0] = {
-      ...args[0],
-      ...{
-        /**
-         * name: 对外暴露项目名,
-         */
-        name: projectName,
-        filename: 'emp.js',
-        shared: ['vue/dist/vue.esm.js'],
-        /**
-         * remotes 远程模块
-         * remotes: {
-         * '引用别名': '远程模块项目名@远程模块的emp.js文件地址',
-         * },
-         */
-        remotes: {
-          '@v2b': 'vue2Base@http://localhost:8009/emp.js',
+/**
+ * @type {import('@efox/emp-cli').EMPConfig}
+ */
+const mf = require('./emp_config/mf')
+const port = 8008
+module.exports = {
+  framework: [require('@efox/emp-vue2')],
+  webpackChain(config) {
+    config.plugin('html').tap(args => {
+      args[0] = {
+        ...args[0],
+        ...{
+          title: 'EMP Vue2 Project',
         },
-      },
-    }
-    return args
-  })
+      }
+      return args
+    })
 
-  config.plugin('html').tap(args => {
-    args[0] = {
-      ...args[0],
-      ...{
-        title: 'EMP Vue2 Project',
+    // 配置 svg loader
+    const svgRule = config.module.rule('svg')
+    svgRule.uses.clear()
+    svgRule.use('vue-svg-loader').loader('vue-svg-loader')
+  },
+  webpack() {
+    return {
+      devServer: {
+        port: port,
       },
     }
-    return args
-  })
-})
+  },
+  async moduleFederation({empEnv}) {
+    console.log('empEnv', empEnv)
+    return mf(empEnv)
+  },
+}

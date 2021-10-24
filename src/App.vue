@@ -1,6 +1,7 @@
 <template>
   <div class="main">
     <h1>Project App</h1>
+      <img :src="require('./logo.png')" alt="logo" />
     <Content />
   </div>
 </template>
@@ -9,7 +10,6 @@
 import Content from "@v2b/Content"
 export default {
   components: {
-    // Content: () => import("@v2b/Content"),
     Content
   },
 };
@@ -24,7 +24,6 @@ export default {
   h1 {
     font-family: Arial, Helvetica, sans-serif;
     font-size:60px;
-    
   }
 }
 </style>
